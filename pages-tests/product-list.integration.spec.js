@@ -1,15 +1,35 @@
-import { screen, render } from '@testing-library/react';
+import { screen, render, waitFor } from '@testing-library/react';
 import ProductList from '../pages';
+import { makeServer } from '../miragejs/server';
 
-jest.mock('../components/product-card', () => ({
-  __esModule: true,
-  default: () => <div>product-card</div>,
-}));
+const renderProductList = () => {
+  render(<ProductList />);
+};
 
 describe('ProductList', () => {
+  let server;
+
+  beforeEach(() => {
+    server = makeServer({ environment: 'test' });
+  });
+
+  afterEach(() => {
+    server.shutdown();
+  });
+
   it('should render ProductList', () => {
-    render(<ProductList />);
+    renderProductList();
 
     expect(screen.getByTestId('product-list')).toBeInTheDocument();
+  });
+
+  it('should render the ProductCard component 10 items', async () => {
+    server.createList('product', 10);
+
+    renderProductList();
+
+    await waitFor(() => {
+      expect(screen.getAllByTestId('product-card')).toHaveLength(10);
+    });
   });
 });
