@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react';
+import { render, screen, fireEvent } from '@testing-library/react';
 
 import CartItem from './cart-item';
 
@@ -32,5 +32,21 @@ describe('CartItem', () => {
     expect(img).toBeInTheDocument();
     expect(img).toHaveProperty('src', product.image);
     expect(img).toHaveProperty('alt', product.title);
+  });
+
+  it('should display 1 as initial quantity', () => {
+    renderCartItem();
+
+    expect(screen.getByTestId('quantity').textContent).toBe('1');
+  });
+
+  it('should increase quantity by 1 when second button is clicked', () => {
+    renderCartItem();
+
+    const [, button] = screen.getAllByRole('button');
+
+    fireEvent.click(button);
+
+    expect(screen.getByTestId('quantity').textContent).toBe('2');
   });
 });
