@@ -13,6 +13,7 @@ export const useFetchProducts = () => {
         if (mounted) setProducts(res.data.products);
       })
       .catch((err) => {
+        /* istanbul ignore next*/
         if (mounted) setError(true);
       });
 
