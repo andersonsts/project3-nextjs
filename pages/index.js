@@ -19,8 +19,6 @@ export default function Home() {
   const [term, setTerm] = useState('');
   const [localProducts, setLocalProducts] = useState([]);
 
-  function doSearch() {}
-
   useEffect(() => {
     if (term === '') setLocalProducts(products);
     setLocalProducts(
