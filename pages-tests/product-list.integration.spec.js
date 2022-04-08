@@ -1,8 +1,9 @@
 import { screen, render, waitFor, fireEvent } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+import Response from 'miragejs';
+
 import ProductList from '../pages';
 import { makeServer } from '../miragejs/server';
-import Response from 'miragejs';
-import userEvent from '@testing-library/user-event';
 
 const renderProductList = () => {
   render(<ProductList />);
