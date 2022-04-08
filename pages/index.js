@@ -1,18 +1,8 @@
 import { useState, useEffect } from 'react';
 import { useFetchProducts } from '../hooks/use-fetch-products';
-import ProductCard from '../components/product-card';
 import Search from '../components/search';
-
-const ProductNode = ({ products = [] }) => {
-  if (!products.length) return <h4 data-testid="no-products">No Products</h4>;
-  return products.map((product) => (
-    <ProductCard key={product.id} product={product} />
-  ));
-};
-
-const ErrorMessage = () => {
-  return <h4 data-testid="server-error">Server is down</h4>;
-};
+import ErrorMessage from '../components/error-message';
+import ProductNode from '../components/product-node';
 
 export default function Home() {
   const { products, error } = useFetchProducts();
