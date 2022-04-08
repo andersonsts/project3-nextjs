@@ -26,7 +26,7 @@ describe('Cart Store', () => {
     expect(Array.isArray(result.current.state.products)).toBe(true);
   });
 
-  it('should add product in product state', async () => {
+  it('should add 2 products to the list', async () => {
     const products = server.createList('product', 2);
 
     const { result } = renderHook(() => useCartStore());
