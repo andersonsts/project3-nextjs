@@ -1,6 +1,6 @@
 import { screen, render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { renderHook, act } from '@testing-library/react-hooks/dom';
+import { renderHook, act as hooksAct } from '@testing-library/react-hooks/dom';
 import { setAutoFreeze } from 'immer';
 
 import { useCartStore } from '../store/cart';
@@ -40,9 +40,7 @@ describe('Cart', () => {
   it('should remove css class "hidden" in the component', () => {
     render(<Cart />);
 
-    act(() => {
-      toggle();
-    });
+    userEvent.click(screen.getByTestId('close-button'));
 
     expect(screen.getByTestId('cart')).not.toHaveClass('hidden');
   });
@@ -52,10 +50,8 @@ describe('Cart', () => {
 
     const button = screen.getByTestId('close-button');
 
-    act(() => {
-      userEvent.click(button);
-      userEvent.click(button);
-    });
+    userEvent.click(button);
+    userEvent.click(button);
 
     expect(spy).toHaveBeenCalledTimes(2);
   });
@@ -63,7 +59,7 @@ describe('Cart', () => {
   it('should display 2 products cards', () => {
     const products = server.createList('product', 2);
 
-    act(() => {
+    hooksAct(() => {
       for (const product of products) {
         add(product);
       }
@@ -72,5 +68,32 @@ describe('Cart', () => {
     render(<Cart />);
 
     expect(screen.getAllByTestId('cart-item')).toHaveLength(2);
+  });
+
+  it('should remove all products when clear cart button is clicked', () => {
+    const products = server.createList('product', 2);
+
+    hooksAct(() => {
+      for (const product of products) {
+        add(product);
+      }
+    });
+
+    render(<Cart />);
+
+    expect(screen.getAllByTestId('cart-item')).toHaveLength(2);
+
+    const button = screen.getByRole('button', { name: /clear cart/i });
+
+    userEvent.click(button);
+
+    expect(screen.getByText(/there are no items in the cart/i)).toBeInTheDocument();
+    expect(screen.queryAllByText('cart-item')).toHaveLength(0);
+  });
+
+  it('should not display clear cart button if no products are in the cart', () => {
+    render(<Cart />);
+
+    expect(screen.queryByRole('button', { name: /clear cart/i })).toBeNull();
   });
 });
