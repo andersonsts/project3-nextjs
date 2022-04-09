@@ -5,6 +5,13 @@ const initialState = {
   products: [],
 };
 
+const addProduct = (store, product) => {
+  if (store.state.products.includes(product)) {
+    return store.state.products;
+  }
+  return [...store.state.products, product];
+};
+
 export const useCartStore = create((set) => ({
   state: {
     ...initialState,
@@ -13,6 +20,6 @@ export const useCartStore = create((set) => ({
     toggle: () => set((store) => ({ state: { ...store.state, open: !store.state.open } })),
     reset: () => set((_) => ({ state: { ...initialState } })),
     add: (product) =>
-      set((store) => ({ state: { open: true, products: [...store.state.products, product] } })),
+      set((store) => ({ state: { open: true, products: addProduct(store, product) } })),
   },
 }));
