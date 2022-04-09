@@ -16,7 +16,7 @@ export default function Cart() {
     >
       <div className="flex items-center justify-between">
         <h3 className="text-2xl font-medium">Your cart</h3>
-        <button onClick={removeAll}>Clear cart</button>
+        {hasProducts && <button onClick={removeAll}>Clear cart</button>}
         <button
           data-testid="close-button"
           onClick={toggle}
