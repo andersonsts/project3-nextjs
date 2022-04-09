@@ -103,6 +103,16 @@ describe('ProductList', () => {
     });
   });
 
+  it('should display no products message when dont has products', async () => {
+    server.createList('product', 0);
+
+    renderProductList();
+
+    await waitFor(() => {
+      expect(screen.getByText(/No Products$/i)).toBeInTheDocument();
+    });
+  });
+
   it('should display proper quantity when list is filtered', async () => {
     const searchTerm = 'Relógio bonito';
     server.createList('product', 2);

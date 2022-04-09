@@ -1,5 +1,4 @@
 import { render, screen, fireEvent } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
 
 import ProductCard from './product-card';
 
@@ -27,9 +26,7 @@ describe('ProductCard', () => {
     renderProductCard();
 
     expect(screen.getByText(product.title)).toBeInTheDocument();
-    expect(
-      screen.getByText(new RegExp(product.price, 'i')),
-    ).toBeInTheDocument();
+    expect(screen.getByText(new RegExp(product.price, 'i'))).toBeInTheDocument();
     expect(screen.getByTestId('image')).toHaveStyle({
       backgroundImage: product.image,
     });
