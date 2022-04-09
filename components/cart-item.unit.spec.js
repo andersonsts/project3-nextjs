@@ -26,9 +26,7 @@ describe('CartItem', () => {
     const img = screen.getByRole('img', { name: product.title });
 
     expect(screen.getByText(product.title)).toBeInTheDocument();
-    expect(
-      screen.getByText(new RegExp(product.price, 'i')),
-    ).toBeInTheDocument();
+    expect(screen.getByText(new RegExp(product.price, 'i'))).toBeInTheDocument();
     expect(img).toBeInTheDocument();
     expect(img).toHaveProperty('src', product.image);
     expect(img).toHaveProperty('alt', product.title);
@@ -43,9 +41,9 @@ describe('CartItem', () => {
   it('should increase quantity by 1 when second button is clicked', () => {
     renderCartItem();
 
-    const [, button] = screen.getAllByRole('button');
+    const increaseBtn = screen.getByRole('button', { name: 'increase' });
 
-    fireEvent.click(button);
+    fireEvent.click(increaseBtn);
 
     expect(screen.getByTestId('quantity').textContent).toBe('2');
   });
@@ -53,26 +51,28 @@ describe('CartItem', () => {
   it('should decrease quantity by 1 when first button is clicked', () => {
     renderCartItem();
 
-    const [buttonDecrease, buttonIncrease] = screen.getAllByRole('button');
+    const increaseBtn = screen.getByRole('button', { name: 'increase' });
+    const decreaseBtn = screen.getByRole('button', { name: 'decrease' });
+
     const quantity = screen.getByTestId('quantity');
 
-    fireEvent.click(buttonIncrease);
+    fireEvent.click(increaseBtn);
     expect(quantity.textContent).toBe('2');
 
-    fireEvent.click(buttonDecrease);
+    fireEvent.click(decreaseBtn);
     expect(quantity.textContent).toBe('1');
   });
 
   it('should not go below zero in the quantity', () => {
     renderCartItem();
 
-    const [buttonDecrease] = screen.getAllByRole('button');
+    const decreaseBtn = screen.getByRole('button', { name: 'decrease' });
     const quantity = screen.getByTestId('quantity');
 
     expect(quantity.textContent).toBe('1');
 
-    fireEvent.click(buttonDecrease);
-    fireEvent.click(buttonDecrease);
+    fireEvent.click(decreaseBtn);
+    fireEvent.click(decreaseBtn);
 
     expect(quantity.textContent).toBe('0');
   });
