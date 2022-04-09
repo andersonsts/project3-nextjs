@@ -37,7 +37,7 @@ describe('Cart', () => {
     expect(screen.getByTestId('cart')).toHaveClass('hidden');
   });
 
-  it('should add css class "hidden" in the component', () => {
+  it('should remove css class "hidden" in the component', () => {
     render(<Cart />);
 
     act(() => {
